@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 /.pnp
-/truffle/build
 .pnp.js
 
 # testing
@@ -22,4 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
