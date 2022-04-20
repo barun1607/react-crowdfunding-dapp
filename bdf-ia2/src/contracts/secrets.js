@@ -1,4 +1,4 @@
-export const WALLET_ADDRESS = '0x128ad20D65F776cCbC921FAC7EE936e9077f824f';
+export const CONTRACT_ADDRESS = '0x5A7dbB2dF73140388B57589184b58c283178841a';
 
 export const CROWDFUNDING_ABI = [
   {
@@ -84,6 +84,7 @@ export const CROWDFUNDING_ABI = [
     ],
     stateMutability: 'view',
     type: 'function',
+    constant: true,
   },
 ];
 

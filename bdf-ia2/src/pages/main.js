@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import {
   Container,
   Box,
@@ -14,14 +14,13 @@ const Main = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [projects, setProjects] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
-    const loadProjects = async () => {
-      const projectList = await getProjects();
-      setProjects(projectList);
-    };
-
-    // loadProjects();
+    setIsloading(false);
+    const projectsList = getProjects();
+    console.log(projectsList);
+    setProjects(projectsList);
   }, []);
 
   return (
@@ -37,12 +36,23 @@ const Main = () => {
           <Heading color={'white'}>Crowdfunding DApp</Heading>
         </Flex>
       </Box>
-      <Container maxW={'container.lg'} height={'100vh'}>
-        <Flex>
-          <Button onClick={onOpen}>Open Modal</Button>
-          <ModalForm {...{ onClose, isOpen }} />
-        </Flex>
-      </Container>
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <Container maxW={'container.lg'} height={'100vh'}>
+          <Flex direction={'column'}>
+            <Button onClick={onOpen} colorScheme={'blue'} mt={5} mb={10}>
+              Create Project
+            </Button>
+            {projects.length === 0 ? (
+              <Heading>Projects created...</Heading>
+            ) : (
+              <Heading>No. of Projects running : {projects.length}</Heading>
+            )}
+            <ModalForm {...{ onClose, isOpen }} />
+          </Flex>
+        </Container>
+      )}
     </React.Fragment>
   );
 };
