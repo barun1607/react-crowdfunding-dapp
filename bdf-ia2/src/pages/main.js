@@ -6,26 +6,27 @@ import {
   Heading,
   useDisclosure,
   Button,
+  Spinner,
 } from '@chakra-ui/react';
 import { getProjects } from '../components/helper';
 import ModalForm from '../components/modalForm';
+import ProjectCard from '../components/projectCard';
 
 const Main = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [projects, setProjects] = useState([]);
-  const [isLoading, setIsloading] = useState(true);
+  const [projects, setProjects] = useState({ isLoading: true, data: [] });
 
   useEffect(() => {
-    setIsloading(false);
-    const projectsList = getProjects();
-    console.log(projectsList);
-    setProjects(projectsList);
+    getProjects().then(projects => {
+      // console.log(projects);
+      setProjects({ isLoading: false, data: projects });
+    });
   }, []);
 
   return (
     <React.Fragment>
-      <Box bg={'black'} width={'100vw'} height={20}>
+      <Box bg={'black'} width={'100%'} height={20}>
         <Flex
           direction={'row'}
           height={'90%'}
@@ -36,19 +37,27 @@ const Main = () => {
           <Heading color={'white'}>Crowdfunding DApp</Heading>
         </Flex>
       </Box>
-      {isLoading ? (
-        <h1>Loading...</h1>
+      {projects.isLoading ? (
+        <Container
+          maxW={'container.lg'}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          height={'80vh'}
+        >
+          <Spinner size={'xl'} thickness={4}></Spinner>
+        </Container>
       ) : (
-        <Container maxW={'container.lg'} height={'100vh'}>
+        <Container maxW={'container.lg'} mb={'20vh'}>
           <Flex direction={'column'}>
             <Button onClick={onOpen} colorScheme={'blue'} mt={5} mb={10}>
               Create Project
             </Button>
-            {projects.length === 0 ? (
-              <Heading>Projects created...</Heading>
-            ) : (
-              <Heading>No. of Projects running : {projects.length}</Heading>
-            )}
+            <Flex direction={'column-reverse'}>
+              {projects.data.map((item, i) => {
+                return <ProjectCard {...item} key={i} />;
+              })}
+            </Flex>
             <ModalForm {...{ onClose, isOpen }} />
           </Flex>
         </Container>
