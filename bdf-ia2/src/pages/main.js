@@ -19,7 +19,7 @@ const Main = () => {
 
   useEffect(() => {
     getProjects().then(projects => {
-      // console.log(projects);
+      console.log(projects);
       setProjects({ isLoading: false, data: projects });
     });
   }, []);
